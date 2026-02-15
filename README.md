@@ -89,8 +89,13 @@ This exercise is designed to develop practical skills in:
 📁 DFIR-Training-Exercise/
 ├── 📄 unified_timeline_enterprise_CLASSIFIED.csv     # Main investigation file (5,629 events)
 ├── 📄 Cyber_Security_Exercise_Environment_Documentation.md  # Environment guide
-└── 📁 supporting_materials/
-    ├── 📄 DFIR_Incident_Response_Report.docx        # Sample professional report
+└── 📁 Solution-Guides
+    ├── 📄 1. EDR_Evasion_Techniques.md               # Explains EDR evasion techniques used in this exercise
+    ├── 📄 2. EDR_Critical_Failure_Analysis.md        # Explains why EDR failed
+    ├── 📄 3. DeObsfucation_Guide.md                  # Explains the simple obsfucation techniques used in this exercise 
+    ├── 📄 4. Identifying_Domain_Admin_Additions.md   # Explains What account(s) were added to Domain Admin
+    ├── 📄 5. Data_Exfiltration_Guide.md              # Explains how the data was collected, compressed and exfiltrated from environment
+
 ```
 
 ### Dataset Specifications
