@@ -95,6 +95,8 @@ This exercise is designed to develop practical skills in:
     ├── 📄 3. DeObsfucation_Guide.md                  # Explains the simple obsfucation techniques used in this exercise 
     ├── 📄 4. Identifying_Domain_Admin_Additions.md   # Explains What account(s) were added to Domain Admin
     ├── 📄 5. Data_Exfiltration_Guide.md              # Explains how the data was collected, compressed and exfiltrated from environment
+└── 📁 DFIR-ReportS
+    ├── 📄 CONTOSO_DFIR_Incident_Report.docx          # Do NOT read this report until you have finished the exercise
 
 ```
 
