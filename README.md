@@ -48,7 +48,6 @@ This repository contains a comprehensive DFIR training exercise simulating a **r
 
 **Organization:** CONTOSO Corporation (Technology/Software Development, ~1,500 employees)  
 **Date:** February 3, 2026  
-**Attack Duration:** ~43 minutes (10:47:33 - 11:30:00 UTC)  
 **Attack Type:** Advanced Persistent Threat (APT) with Ransomware Deployment  
 
 ## Initial Alerts & Detection
