@@ -103,14 +103,13 @@ CONTOSO.local
 
 | Group Name | Type | Members | Purpose |
 |------------|------|---------|---------|
-| **Domain Admins** | Security (Global) | Administrator, jennifer.hayes, Backup Admin* | Full domain control |
+| **Domain Admins** | Security (Global) | Administrator, jennifer.hayes | Full domain control |
 | **Enterprise Admins** | Security (Universal) | Administrator | Forest-wide control |
 | **IT Staff** | Security (Global) | david.palmer, jennifer.hayes, michael.chen | Standard IT privileges |
 | **Helpdesk** | Security (Global) | robert.kim, lisa.wong | Password reset, unlock accounts |
 | **Server Admins** | Security (Global) | jennifer.hayes, kevin.torres | Server local admin |
 | **Marketing** | Security (Global) | sarah.mitchell, emma.davis, ryan.lopez | Marketing department |
 | **Finance** | Security (Global) | laura.martinez, kevin.anderson | Finance access |
-* Backup Admin added to DA as persistence by Jennifer Haynes
 
 
 ---
@@ -152,7 +151,7 @@ CONTOSO.local
 
 ### File Servers
 
-#### FILESERVER01 (Primary File Server - COMPROMISED)
+#### FILESERVER01 (Primary File Server)
 - **Hostname:** FILESERVER01.contoso.local
 - **IP Address:** 10.50.10.30
 - **Operating System:** Windows Server 2022 Standard
@@ -196,7 +195,7 @@ D:\Shares\CompanyData\
 
 ### Workstations
 
-#### WORKSTATION-01 (COMPROMISED - Initial Access)
+#### WORKSTATION-01 
 - **Hostname:** WORKSTATION-01.contoso.local
 - **IP Address:** 10.50.10.15
 - **Operating System:** Windows 11 Enterprise (23H2)
@@ -205,7 +204,7 @@ D:\Shares\CompanyData\
 - **CPU:** Intel Core i7-13700
 - **RAM:** 16 GB
 - **Storage:** 512 GB NVMe SSD
-- **Security:** CrowdStrike Falcon (disabled by attacker), Windows Defender disabled
+- **Security:** CrowdStrike Falcon
 - **Last Patched:** January 25, 2026
 - **Applications:**
   - Microsoft Office 365 (Outlook, Word, Excel, PowerPoint)
@@ -213,7 +212,7 @@ D:\Shares\CompanyData\
   - Chrome, Edge browsers
   - Slack, Microsoft Teams
 
-#### WORKSTATION-02 (COMPROMISED - Lateral Movement)
+#### WORKSTATION-02
 - **Hostname:** WORKSTATION-02.contoso.local
 - **IP Address:** 10.50.10.22
 - **Operating System:** Windows 11 Enterprise (23H2)
@@ -258,7 +257,7 @@ D:\Shares\CompanyData\
 - **Purpose:** Internal CRM application (SalesForce connector)
 - **CPU:** 8 vCPUs
 - **RAM:** 32 GB
-- **Status:** Not affected by incident
+
 
 #### APPSERVER02
 - **Hostname:** APPSERVER02.contoso.local
@@ -267,13 +266,13 @@ D:\Shares\CompanyData\
 - **Purpose:** SharePoint On-Premises (legacy)
 - **CPU:** 16 vCPUs
 - **RAM:** 48 GB
-- **Status:** Not affected by incident
+
 
 ---
 
 ## User Accounts & Privileges
 
-#### sarah.mitchell (Initial Victim)
+#### sarah.mitchell
 - **Username:** sarah.mitchell
 - **Email:** sarah.mitchell@contoso.com
 - **Department:** Marketing
@@ -286,10 +285,10 @@ D:\Shares\CompanyData\
 - **Primary Workstation:** WORKSTATION-01
 - **Hire Date:** March 2024
 - **Last Password Change:** December 15, 2025
-- **MFA Status:** ❌ Not enabled
+- **MFA Status:** Not enabled
 
 
-#### david.palmer (Lateral Movement Target)
+#### david.palmer 
 - **Username:** david.palmer
 - **Email:** david.palmer@contoso.com
 - **Department:** IT Operations
@@ -309,7 +308,7 @@ D:\Shares\CompanyData\
 - **Last Password Change:** January 5, 2026
 
 
-#### james.rodriguez (Collateral Credential Theft)
+#### james.rodriguez 
 - **Username:** james.rodriguez
 - **Email:** james.rodriguez@contoso.com
 - **Department:** Engineering
@@ -319,10 +318,9 @@ D:\Shares\CompanyData\
   - Engineering
   - Developers
 - **Privileges:** Standard user
-- **Compromise Method:** Cached credentials in LSASS on WORKSTATION-01
-- **Impact:** Minimal - credentials obtained but not actively used
 
-#### jennifer.hayes (Domain Administrator - CRITICAL)
+
+#### jennifer.hayes 
 - **Username:** jennifer.hayes
 - **Email:** jennifer.hayes@contoso.com
 - **Department:** IT Administration
@@ -345,21 +343,9 @@ D:\Shares\CompanyData\
 - **Last Password Change:** November 20, 2025
 
 
-#### BackupAdmin (Malicious Account - Created by Attacker)
-- **Username:** BackupAdmin
-- **Created:** February 3, 2026 at 11:12:15 UTC
-- **Created By:** jennifer.hayes (compromised account)
-- **Groups:**
-  - Domain Users
-  - Domain Admins 
-  - Administrators 
-- **Privileges:** Full domain administrative access
-- **Purpose:** Attacker persistence mechanism
-
-
 ---
 
-### Non-Compromised Users (Representative Sample)
+### Representative Sample of Users
 
 | Username | Department | Title | Privileges | Groups |
 |----------|------------|-------|------------|--------|
@@ -573,36 +559,8 @@ Status: Requires investigation
    - Evaluate detection opportunities
    - Propose preventive controls
 
----
-
-## Investigation Starting Points
-
-### For Analysts New to the Exercise
-
-#### Starting Point #1: Initial Alert Investigation
-**Where to Start:** Review CrowdStrike alerts from 10:49:25 UTC onwards
-
-**Key Questions:**
-- What triggered the first tamper protection alert?
-- What process attempted to stop CrowdStrike service?
-- Who was logged into WORKSTATION-01 at that time?
-- What activity preceded the tamper attempt?
-
-**Files to Examine:**
-- `unified_timeline_enterprise.csv` - Filter for WORKSTATION-01 around 10:49:00
-- PowerShell logs (Event 4103, 4104) on WORKSTATION-01
-- CrowdStrike detection alerts
 
 ---
-
-#### Starting Point #2: User Activity Analysis
-**Where to Start:** Investigate sarah.mitchell account activity on February 3, 2026
-
-**Key Questions:**
-- What was sarah.mitchell's normal behavior pattern?
-- Were any suspicious PowerShell commands executed?
-
-*
 ### Difficulty Levels
 
 #### **Beginner Level:**
@@ -621,16 +579,6 @@ Status: Requires investigation
 - Identify detection gaps and propose improvements
 - Build detection rules to prevent similar attacks
 - Write executive report suitable for board presentation
-
----
-
-### Files Provided for Investigation
-
-1. **unified_timeline_enterprise.csv** - Main investigation file (5,880 events)
-2. **DATA_EXFILTRATION_PHASE_SUMMARY.md** - Attack phase documentation
-3. **EDR_EVASION_TECHNIQUE.md** - EDR bypass technical details
-4. **EXERCISE_DIFFICULTY_ANALYSIS.md** - Signal-to-noise analysis
-5. **DFIR_Incident_Response_Report_Professional.docx** - Reference answer key
 
 ---
 

@@ -24,7 +24,6 @@ A realistic, enterprise-grade Digital Forensics and Incident Response (DFIR) tra
 - [Educational Philosophy](#educational-philosophy)
 - [Contributing](#contributing)
 - [License](#license)
-- [Acknowledgments](#acknowledgments)
 
 ---
 
@@ -51,6 +50,27 @@ This repository contains a comprehensive DFIR training exercise simulating a **r
 **Date:** February 3, 2026  
 **Attack Duration:** ~43 minutes (10:47:33 - 11:30:00 UTC)  
 **Attack Type:** Advanced Persistent Threat (APT) with Ransomware Deployment  
+
+## Initial Alerts & Detection
+
+### Timeline of Alerts Received by SOC
+
+#### 10:49:25 UTC - CrowdStrike Alert #1 (HIGH Severity)
+```
+Alert: Tamper Protection Violation
+Source: CrowdStrike Falcon
+Severity: HIGH
+Hostname: WORKSTATION-01.contoso.local
+User: CONTOSO\sarah.mitchell
+Process: powershell.exe
+Detection: Attempt to stop CSFalconService blocked
+Technique: T1562.001 (Disable or Modify Tools)
+Action Taken: BLOCKED
+Status: Requires investigation
+```
+
+**SOC Response:** Ticket created (INC-2026-0203-001), assigned to Tier 1 analyst
+
 
 ---
 
@@ -137,37 +157,25 @@ This exercise is designed to develop practical skills in:
 **Advanced Level:**
 - Deep understanding of Windows internals
 - Active Directory security architecture
-- Python programming with data analysis libraries
 - Experience with SIEM platforms
 - Knowledge of MITRE ATT&CK framework
 
-### Tools Required
+### Tools Recommended
 
-#### Beginner Tools
-- **Spreadsheet Software:** Excel, LibreOffice Calc, or Google Sheets
-- **Text Editor:** Notepad++, VSCode, or any capable text editor
-- **CSV Viewer:** Any tool that can handle 5,600+ row CSV files
-
-#### Intermediate Tools
-- **Spreadsheet Software:** Excel or LibreOffice
+#### Recommended Tools
+- **CSV Viewer:** Excel, LibreOffice Calc, Timeline Explorer (Eric Zimmerman)
 - **Command-Line Tools:** `grep`, `awk`, `sort`, `cut` (built-in on Linux/Mac, available via WSL/Cygwin on Windows)
 - **PowerShell:** For advanced filtering (`Import-Csv`, `Where-Object`, `Group-Object`)
 - **Python (Optional):** For scripting custom analysis
-
-#### Advanced Tools
-- **Python + pandas:** **REQUIRED** for efficient large-scale analysis
 - **grep/awk:** For quick initial filtering
-- **SIEM Platform:** Splunk, ELK Stack, or similar (highly recommended)
-- **Jupyter Notebook:** For interactive analysis and documentation
-- **Timeline Tools:** Plaso/log2timeline, TimeSketch
-- **Visualization:** Matplotlib, Plotly for timeline visualization
-- **Custom Scripts:** For automated correlation and pattern detection
+- **SIEM Platform:** Local versions of Splunk, ELK Stack, or similar 
+- **Timeline Tools:** Plaso/log2timeline, TimeSketch if you want advanced timelining
 
 ---
 
 ## 🚀 Getting Started
 
-### Quick Start (Beginner)
+### Quick Start 
 
 1. **Clone or Download** this repository
    ```bash
@@ -191,59 +199,6 @@ This exercise is designed to develop practical skills in:
    - Create a separate document for your investigation notes
    - Track: Compromised accounts, compromised systems, IOCs, timeline events
 
-### Quick Start (Intermediate)
-
-1. **Load Data into Analysis Tool and Examples ONLY**
-   ```bash
-   # Using command-line tools
-   grep -i "powershell" incident_timeline.csv | less
-   awk -F',' '$4 == "4624" {print $1,$6}' incident_timeline.csv
-   ```
-
-   ```powershell
-   # Using PowerShell
-   $events = Import-Csv incident_timeline.csv
-   $events | Where-Object {$_.Event_ID -eq "4688"} | Select Timestamp,System,User,Process
-   ```
-
-2. **Focus on Key Systems**
-   - Start with systems showing suspicious activity - investigate the initail Crowdstrike alert
-
-
-3. **Build Correlation Queries**
-   - Link process creation to network connections
-   - Correlate logons with suspicious activity
-   - Map lateral movement paths
-
-### Quick Start (Advanced)
-
-1. **Python Analysis Setup**
-   ```python
-   import pandas as pd
-   import numpy as np
-   from datetime import datetime
-   
-   # Load timeline
-   df = pd.read_csv('incident_timeline.csv')
-   
-   
-   # Quick overview
-   print(f"Total events: {len(df)}")
-   print(f"Systems: {df['System'].nunique()}")
-   print(f"Users: {df['User'].nunique()}")
-   print(f"Date range: {df['Timestamp'].min()} to {df['Timestamp'].max()}")
-   ```
-
-2. **SIEM Import**
-   - Import CSV into Splunk, ELK, or your preferred SIEM
-   - Create custom dashboards for timeline visualization
-   - Set up correlation rules for technique detection
-
-3. **Advanced Analysis**
-   - Use pandas for cross-system correlation
-   - Build attack graphs showing lateral movement
-   - Develop automated detection rules
-   - Generate MITRE ATT&CK Navigator layers
 
 ---
 
@@ -535,59 +490,6 @@ You'll practice the exact skills needed in real incident response:
 
 **Why?** These are the skills that employers value and real-world incidents demand.
 
-### What Makes This "Realistic"?
-
-**✅ Authentic Attack Pattern**
-- Based on actual BlackCat/ALPHV, LockBit, and Hive ransomware operations
-- Uses documented EDR bypass techniques 
-- Follows real APT playbooks (credential dumping → lateral movement → domain compromise
-
-**✅ Real-World Logging**
-- Events formatted exactly as Windows/Sysmon/EDR generate them
-- Realistic Event IDs (4624, 4688, Sysmon Event 1, 10, etc.)
-- Proper parent-child process relationships
-- Accurate network connection logging
-
-**✅ Enterprise Environment**
-- 1,500 employee organization
-- Active Directory domain (contoso.local)
-- Multiple VLANs and network segments
-- Realistic security controls (CrowdStrike Falcon, Sysmon)
-- Normal business operations generating background noise
-
-**✅ Forensically Sound**
-- Every action requires proper authentication (Event 4624)
-- Process execution follows Windows architecture
-- Network connections have proper source/destination
-- Timeline is internally consistent
-- No "magic" events that couldn't happen in reality
-
-### Learning Philosophy
-
-**"Learn by Doing, Not by Reading"**
-
-You won't learn DFIR by reading about it. This exercise throws you into the deep end:
-- No hand-holding (beyond environment documentation)
-- No step-by-step walkthrough (intentionally)
-- No "Click here to see the answer" buttons
-- You have to figure it out, just like in real incidents
-
-**"Fail Fast, Learn Faster"**
-
-Your first attempt won't be perfect. That's expected and encouraged:
-- Try different filtering approaches
-- Test hypotheses and discard wrong ones
-- Make mistakes and learn from them
-- Compare your findings to the ground truth afterward
-
-**"Professional Standards"**
-
-This isn't just about finding the answer—it's about:
-- **Documenting your methodology** - Can someone reproduce your analysis?
-- **Supporting claims with evidence** - Where's the proof?
-- **Communicating clearly** - Can a non-technical executive understand?
-- **Meeting deadlines** - Real incidents have time pressure
-
 ---
 
 ## 🤝 Contributing
@@ -629,88 +531,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 - ❌ Don't claim you created this
 - ❌ Don't sell this as a commercial product without significant modification
 
-### Attribution
-
-If you use this exercise in training, presentations, or educational content, please credit:
-```
-Enterprise Security Incident - DFIR Training Exercise
-Created by Andy Macready
-https://github.com/amacready/Contoso-DFIR-Exercise
-```
-
----
-
-## 🙏 Acknowledgments
-
-This training exercise was developed to address the gap between theoretical cybersecurity education and practical incident response skills. It represents hundreds of hours of work to create a realistic, educational, and challenging learning experience.
-
-### Inspiration
-
-This exercise draws from:
-- Real-world APT campaigns and ransomware operations
-- Actual incident response engagements (anonymized and sanitized)
-- MITRE ATT&CK framework and threat intelligence
-- Enterprise security architecture best practices
-- Professional DFIR community knowledge
-
-### Special Thanks
-
-- The **DFIR community** for sharing techniques, tools, and knowledge
-- **MITRE** for the ATT&CK framework providing common language for threat analysis
-- **Microsoft** for comprehensive Windows logging documentation
-- **Sysmon community** for advanced logging capabilities
-- **CrowdStrike**, **Splunk**, and other security vendors for detailed attack reports
-- **Ransomware victims** who shared their stories to help others learn
-
-### Educational Mission
-
-This project is released as **free, open educational material** because:
-- 🎓 **Cybersecurity skills shouldn't be behind paywalls**
-- 🌍 **Everyone deserves access to quality training**
-- 💪 **We're stronger when we learn together**
-- 🛡️ **Better-trained defenders make us all safer**
-
----
-
-## 📞 Contact & Support
-
-### Questions?
-
-- 📖 **Read the Docs First:** Most questions are answered in `Cyber_Security_Exercise_Environment_Documentation.md`
-- 💬 **Discussions:** Use GitHub Discussions for general questions, tips, and community support
-- 🐛 **Issues:** Report bugs or data quality problems via GitHub Issues
-- 📧 **Direct Contact:** [Your contact method if you want to provide one]
-
-### Resources
-
-- 🔗 **MITRE ATT&CK:** https://attack.mitre.org/
-- 🔗 **Sysmon Configuration:** https://github.com/SwiftOnSecurity/sysmon-config
-- 🔗 **Windows Event Logging:** https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/
-- 🔗 **SANS DFIR:** https://www.sans.org/cyber-security-courses/advanced-incident-response-threat-hunting-training/
-
-### Stay Updated
-
-- ⭐ **Star this repo** to get notifications of updates
-- 👁️ **Watch this repo** for new releases
-- 🍴 **Fork this repo** to create your own variations
-
----
-
-## 🎯 Final Thoughts
-
-**This is more than just a training exercise—it's a simulation of what you'll face in real incidents.**
-
-When you work through this timeline:
-- You're practicing the same analysis actual incident responders do
-- You're developing skills that employers desperately need
-- You're learning to recognize patterns that could save your organization
-- You're building the mindset of a professional DFIR analyst
-
-**The techniques in this exercise are real. The tools are real. The challenge is real.**
-
-The only thing that's not real is the consequences. Use this opportunity to make mistakes, try different approaches, and learn without the pressure of a live incident.
-
-**When (not if) you face a real breach, you'll be ready.**
 
 ---
 
