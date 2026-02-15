@@ -70,7 +70,6 @@ Status: Requires investigation
 
 **SOC Response:** Ticket created (INC-2026-0203-001), assigned to Tier 1 analyst
 
-
 ---
 
 ## 🎓 Learning Objectives
