@@ -105,7 +105,8 @@ This exercise is designed to develop practical skills in:
 
 ```
 📁 DFIR-Training-Exercise/
-├── 📄 unified_timeline_enterprise_CLASSIFIED.csv     # Main investigation file (5,629 events)
+├── 📄 incident_timeline.csv     # Main investigation file - seconds dont work in the timestamp of csv  (5,629 events)
+├── 📄 incident_timeline.xlsx     # Main investigation file in XLSX format to ensure seconds are available in timestamp(5,629 events)
 ├── 📄 Cyber_Security_Exercise_Environment_Documentation.md  # Environment guide
 └── 📁 Solution-Guides
     ├── 📄 1. EDR_Evasion_Techniques.md               # Explains EDR evasion techniques used in this exercise
